@@ -1,2 +1,2 @@
 # CPS630-Project
-A Web app
+A Typing Game Web App.
