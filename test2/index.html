@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body ng-app='app'>
+    <div ng-controller="cont">
+
+        <form ng-submit="setUUID()">
+            <input type="text" ng-model="userID" placeholder="Type your User ID" />
+            <button type="submit">Set User ID</button>
+        </form>
+
+        <h1 id="test">TEST</h1>
+        <h1 id="room">ROOM</h1>
+        <h1 id="timer">TIMER</h1>
+        <h1>{{ team1Points }} {{ team2Points }}</h1>
+        <ul id="messages">
+            <li ng-repeat="z in words"> {{ z }} </li>
+
+        </ul>
+        <form action="">
+            <input id="m" autocomplete="off" /><button>Send</button>
+        </form>
+    </div>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
