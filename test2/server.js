@@ -4,11 +4,30 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 
+
+var session = require("express-session")({
+    secret: "my-secret",
+    resave: true,
+    saveUninitialized: true
+});
+var sharedsession = require("express-socket.io-session");
+
+// Use express-session middleware for express
+app.use(session);
+
+// Use shared session middleware for socket.io
+// setting autoSave:true
+io.use(sharedsession(session, {
+    autoSave: true
+}));
+
+var currentRoom;
 var numofUsers = 0;
 var usernames = {};
 var connections = [];
 var numOfRooms = 0;
 var team = 0;
+var newplayer = false;
 const numofPlayers = 2;
 
 http.listen(port, function() {
@@ -16,12 +35,13 @@ http.listen(port, function() {
 });
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/login.html');
 });
 
 app.use(express.static(__dirname + '/'));
 
 function updateUsers(socket) {
+    socket.points = 0;
     numOfRooms = parseInt(connections.length / 3);
     var numClients = 0;
     var newRoom;
@@ -65,7 +85,6 @@ function updateUsers(socket) {
         io.to(newRoom).emit('not ready');
     }
     //} // END OF BIG ELSE
-
 } // END OF FUNC
 
 
@@ -73,13 +92,20 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     numofUsers++;
     connections.push(socket);
     socket.points = 0;
-    updateUsers(socket);
+    //socket.handshake.session.username[connections.length];
+
+    if (newplayer)
+        updateUsers(socket);
+    newplayer = false;
+
+
     var currentRoom = Object.keys(io.sockets.adapter.sids[socket.id])[0];
+
+    console.log(" Num of people " + connections.length + " Socket id is " + socket.id);
 
     socket.on('disconnect', function() {
         numofUsers--;
         connections.splice(connections.indexOf(socket), 1);
-
     });
 
 
@@ -87,6 +113,7 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
         io.to(currentRoom).emit('chat message', msg, socket.team);
         usernames[socket.id] = msg;
         io.sockets.adapter.rooms[currentRoom].isUpdated = false;
+        console.log(socket.handshake.session.username + " Socket points: " + socket.points);
     });
 
 
@@ -100,18 +127,44 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
         if (!io.sockets.adapter.rooms[currentRoom].isUpdated)
             if (parseInt(team) === 1) {
                 io.sockets.adapter.rooms[currentRoom].points1 += wordPoint(word);
+                socket.points += wordPoint(word);
             } else if (parseInt(team) === 2) {
             io.sockets.adapter.rooms[currentRoom].points2 += wordPoint(word);
+            socket.points += wordPoint(word);
         }
+
         io.sockets.adapter.rooms[currentRoom].isUpdated = true;
 
         socket.emit('updateScore', io.sockets.adapter.rooms[currentRoom].points1, io.sockets.adapter.rooms[currentRoom].points2);
 
-        console.log("Socket on team " + socket.team + " has " + socket.points + "points\n" + " Team 1: " + io.sockets.adapter.rooms[currentRoom].points1 + " Team 2: " + io.sockets.adapter.rooms[currentRoom].points2 + "\n-------------------------------------");
+        // console.log("Socket on team " + socket.team + " has " + socket.points + "points\n" + " Team 1: " + io.sockets.adapter.rooms[currentRoom].points1 + " Team 2: " + io.sockets.adapter.rooms[currentRoom].points2 + "\n-------------------------------------");
     });
+
+    socket.on('setUsername', function(name) {
+        socket.handshake.session.username = name;
+        socket.username = name;
+        newplayer = true;
+        socket.handshake.session.save();
+        //  console.log(socket.handshake.session.username);
+    });
+
+
 
     socket.on('setArr', function(newWords) {
         io.sockets.adapter.rooms[currentRoom].words = newWords;
+
+        if (newWords.length === 0) {
+            var teamPoints, playerPoints;
+
+            if (socket.team === 1)
+                teamPoints = io.sockets.adapter.rooms[currentRoom].points1;
+            else
+                teamPoints = io.sockets.adapter.rooms[currentRoom].points2;
+
+            playerPoints = socket.points;
+            socket.emit('endGame', teamPoints, playerPoints);
+        }
+
         io.to(currentRoom).emit('sentNewArray', io.sockets.adapter.rooms[currentRoom].words);
     });
 

@@ -3,6 +3,14 @@ var team = 0;
 var timer = 10;
 var counter = 0;
 
+function setUsername() {
+    var name = document.getElementById("username").value;
+    socket.emit('setUsername', name);
+    socket.emit('updateUsers');
+    window.location.href = "./index.html";
+}
+
+
 var app = angular.module("app", []);
 app.controller("cont", function($scope) {
     $scope.words = [];
@@ -52,6 +60,14 @@ app.controller("cont", function($scope) {
                 $scope.words = msg;
             });
         });
+
+
+        socket.on('endGame', function(teamPoints, playerPoints) {
+            $('#test').html('GAME END');
+            $('#room').html('GAME END');
+            $('#points').html("Team Points " + teamPoints + " Player Points: " + playerPoints);
+        });
+
 
         socket.on('start', function(msg) {
             $('#test').html('PASS');
