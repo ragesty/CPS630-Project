@@ -127,10 +127,13 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
         if (!io.sockets.adapter.rooms[currentRoom].isUpdated)
             if (parseInt(team) === 1) {
                 io.sockets.adapter.rooms[currentRoom].points1 += wordPoint(word);
-                socket.points += wordPoint(word);
+                if (socket.team === 1)
+                    socket.points += wordPoint(word);
             } else if (parseInt(team) === 2) {
             io.sockets.adapter.rooms[currentRoom].points2 += wordPoint(word);
-            socket.points += wordPoint(word);
+
+            if (socket.team === 2)
+                socket.points += wordPoint(word);
         }
 
         io.sockets.adapter.rooms[currentRoom].isUpdated = true;
