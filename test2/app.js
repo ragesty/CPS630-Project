@@ -11,6 +11,22 @@ function setUsername() {
 }
 
 
+function endGame(teamPoints, playerPoints) {
+    $('#test').html('GAME END');
+    $('#room').html('GAME END');
+    $('#points').html("Team Points " + teamPoints + " Player Points: " + playerPoints);
+    var timeInterval = setInterval(() => {
+        counter++;
+        $('#timer').html("GAME Ending IN: " + (timer - counter));
+        if (timer == counter) {
+            counter = 0; //reset timer
+            window.location.href = "./login.html";
+        }
+    }, 1000);
+
+}
+
+
 var app = angular.module("app", []);
 app.controller("cont", function($scope) {
     $scope.words = [];
@@ -56,6 +72,13 @@ app.controller("cont", function($scope) {
             });
         });
 
+
+        /*        socket.on('refresh', function() {
+                    refreshPage();
+                });*/
+
+
+
         socket.on('sentNewArray', function(msg) {
             $scope.$apply(function() {
                 $scope.words = msg;
@@ -64,9 +87,12 @@ app.controller("cont", function($scope) {
 
 
         socket.on('endGame', function(teamPoints, playerPoints) {
-            $('#test').html('GAME END');
-            $('#room').html('GAME END');
-            $('#points').html("Team Points " + teamPoints + " Player Points: " + playerPoints);
+            //  $('#test').html('GAME END');
+            //$('#room').html('GAME END');
+            //$('#points').html("Team Points " + teamPoints + " Player Points: " + playerPoints);
+
+            endGame(teamPoints, playerPoints);
+
         });
 
 
