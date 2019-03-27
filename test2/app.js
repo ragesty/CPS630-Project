@@ -49,9 +49,10 @@ app.controller("cont", function($scope) {
 
         socket.on('chat message', function(msg, team) {
             $scope.$apply(function() { //APPLIES CHANGE TO FUNCITON
-                if ($scope.findword(msg))
+                if (msg != null && msg != '' && $scope.findword(msg)) {
                     socket.emit('correct', parseInt(team), msg);
-                socket.emit('setArr', $scope.words);
+                    socket.emit('setArr', $scope.words);
+                }
             });
         });
 

@@ -110,10 +110,12 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
 
 
     socket.on('chat message', function(msg) {
+        io.sockets.adapter.rooms[currentRoom].isUpdated = false;
         io.to(currentRoom).emit('chat message', msg, socket.team);
         usernames[socket.id] = msg;
-        io.sockets.adapter.rooms[currentRoom].isUpdated = false;
-        console.log(socket.handshake.session.username + " Socket points: " + socket.points);
+
+        // console.log("Socket on team " + socket.team + " Socket id" + socket.id);
+
     });
 
 
@@ -124,23 +126,32 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
 
     socket.on('correct', function(team, word) { // DIVIDE BY NUMBER OF PEOPLE IN ROOM
 
-        if (!io.sockets.adapter.rooms[currentRoom].isUpdated)
+
+
+        if (!io.sockets.adapter.rooms[currentRoom].isUpdated) {
             if (parseInt(team) === 1) {
                 io.sockets.adapter.rooms[currentRoom].points1 += wordPoint(word);
-                if (socket.team === 1)
-                    socket.points += wordPoint(word);
-            } else if (parseInt(team) === 2) {
-            io.sockets.adapter.rooms[currentRoom].points2 += wordPoint(word);
+                //if (socket.team === 1)
 
-            if (socket.team === 2)
-                socket.points += wordPoint(word);
+            } else if (parseInt(team) === 2) {
+                io.sockets.adapter.rooms[currentRoom].points2 += wordPoint(word);
+
+                //if (socket.team === 2)
+
+            }
+            console.log("Socket on team " + socket.team + " variable:  " + team + " points\n" + "\n-------------------------------------");
+
         }
+
+        if (socket.team === team)
+            socket.points += wordPoint(word);
+
+
 
         io.sockets.adapter.rooms[currentRoom].isUpdated = true;
 
         socket.emit('updateScore', io.sockets.adapter.rooms[currentRoom].points1, io.sockets.adapter.rooms[currentRoom].points2);
 
-        // console.log("Socket on team " + socket.team + " has " + socket.points + "points\n" + " Team 1: " + io.sockets.adapter.rooms[currentRoom].points1 + " Team 2: " + io.sockets.adapter.rooms[currentRoom].points2 + "\n-------------------------------------");
     });
 
     socket.on('setUsername', function(name) {
