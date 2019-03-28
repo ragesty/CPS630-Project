@@ -1,0 +1,77 @@
+<!-- User profile page -->
+<!-- 
+    Will need:
+        get user's info from database based on their userID
+            Points
+            Average WPM
+            Win/loss ratio
+            Accuracy rating
+            Username
+            Profile picture
+
+        Option to reset password??
+            Will need to send an email to them with a link
+        
+        https://firebase.google.com/docs/reference/js/firebase.database.Query
+        https://firebase.google.com/docs/database/web/read-and-write
+
+-->
+
+<!DOCTYPE html>
+
+<hmtl>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-database.js"></script>
+        
+        <script src="firebaseInit.js"></script>
+        <script src="firebaseStuff.js"></script>
+         <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+        <title>Profile</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">TypeX Legends</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="#">Page 1</a></li>
+                    <li><a href="#">Page 2</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            
+            <div class="jumbotron">
+                <div class="media">
+                    <div class="media-left">
+                        <img src="http://i.imgur.com/YdhUZdZ.png" class="media-object" id="profPic" >
+                        
+                    </div>
+                    <div class="media-body">
+                        <h1 class="media-heading" style="text-align: center; padding-top: 50px;" id="username">Username will go here</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="well well-lg" id="pts">Points: </div>
+            <div class="well well-lg"id="wpm">Average WPM: </div>
+            <div class="well well-lg" id="accuracy">Accuracy Rating: </div>
+        </div>
+    </body>
+</hmtl>
