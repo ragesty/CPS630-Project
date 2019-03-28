@@ -15,8 +15,7 @@
 
         function setUsername() {
             var myUsername = document.getElementById("username").value;
-            socket.emit('setUsername', myUsername);
-            socket.emit('updateUsers');
+            socket.emit('joinGame');
             window.location.href = "./index.html?myVar1=" + myUsername;
         }
     </script>

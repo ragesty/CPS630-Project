@@ -157,13 +157,10 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
 
 
     // Set username of Socket NOT USED
-    /*
-        socket.on('setUsername', function(name) {
-            socket.handshake.session.username = name;
-            socket.username = name;
-            newplayer = true;
-            socket.handshake.session.save();
-     });*/
+
+    socket.on('joinGame', function() {
+        newplayer = true;
+    });
 
 
     // Function that sets room array, if array is empty it emits a end game message to the html files
