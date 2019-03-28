@@ -21,6 +21,13 @@ io.use(sharedsession(session, {
     autoSave: true
 }));
 
+io.of('/namespace').use(sharedsession(session, {
+    autoSave: true
+}));
+
+
+
+
 var currentRoom;
 var numofUsers = 0;
 var usernames = {};
@@ -92,6 +99,7 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     numofUsers++;
     connections.push(socket);
     socket.points = 0;
+    socket.handshake.session.username = "empty";
     //socket.handshake.session.username[connections.length];
 
     if (newplayer)
@@ -111,7 +119,7 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
 
     socket.on('chat message', function(msg) {
         io.sockets.adapter.rooms[currentRoom].isUpdated = false;
-        io.to(currentRoom).emit('chat message', msg, socket.team);
+        io.to(currentRoom).emit('chat message', msg, socket.team, socket.id);
         usernames[socket.id] = msg;
 
         // console.log("Socket on team " + socket.team + " Socket id" + socket.id);
@@ -124,7 +132,7 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     }
 
 
-    socket.on('correct', function(team, word) { // DIVIDE BY NUMBER OF PEOPLE IN ROOM
+    socket.on('correct', function(team, word, id) { // DIVIDE BY NUMBER OF PEOPLE IN ROOM
 
 
 
@@ -139,15 +147,15 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
                 //if (socket.team === 2)
 
             }
-            console.log("Socket on team " + socket.team + " variable:  " + team + " points\n" + "\n-------------------------------------");
+            // console.log("Socket on team " + socket.team + " variable:  " + team + " points\n" + "\n-------------------------------------");
 
         }
 
-        if (socket.team === team)
+        if (socket.id === id)
             socket.points += wordPoint(word);
 
 
-
+        console.log("Socket username is " + socket.handshake.session.username + " Socket id" + socket.id);
         io.sockets.adapter.rooms[currentRoom].isUpdated = true;
 
         socket.emit('updateScore', io.sockets.adapter.rooms[currentRoom].points1, io.sockets.adapter.rooms[currentRoom].points2);
@@ -159,6 +167,7 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
         socket.username = name;
         newplayer = true;
         socket.handshake.session.save();
+
         //  console.log(socket.handshake.session.username);
     });
 

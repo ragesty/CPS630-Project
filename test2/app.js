@@ -3,13 +3,18 @@ var team = 0;
 var timer = 10;
 var counter = 0;
 
-function setUsername() {
-    var name = document.getElementById("username").value;
-    socket.emit('setUsername', name);
-    socket.emit('updateUsers');
-    window.location.href = "./index.html";
-}
 
+
+/*function setUsername() {
+    myUsername = document.getElementById("username").value;
+    socket.emit('setUsername', myUsername);
+    socket.emit('updateUsers');
+    window.location.href = "./index.html?myVar=" + myUsername;
+}*/
+
+const urlParams = new URLSearchParams(window.location.search);
+var myUsername = urlParams.get("myVar1");
+$('#username1').html(myUsername);
 
 function endGame(teamPoints, playerPoints) {
     $('#test').html('GAME END');
@@ -63,10 +68,10 @@ app.controller("cont", function($scope) {
             });
         });
 
-        socket.on('chat message', function(msg, team) {
+        socket.on('chat message', function(msg, team, id) {
             $scope.$apply(function() { //APPLIES CHANGE TO FUNCITON
                 if (msg != null && msg != '' && $scope.findword(msg)) {
-                    socket.emit('correct', parseInt(team), msg);
+                    socket.emit('correct', parseInt(team), msg, id);
                     socket.emit('setArr', $scope.words);
                 }
             });
@@ -99,7 +104,6 @@ app.controller("cont", function($scope) {
         socket.on('start', function(msg) {
             $('#test').html('PASS');
             $('#room').html(msg);
-
             var timeInterval = setInterval(() => {
                 counter++;
                 $('#timer').html("GAME STARTING IN: " + (timer - counter));
@@ -113,6 +117,7 @@ app.controller("cont", function($scope) {
                 }
             }, 1000);
         });
+
 
         socket.on('not ready', function(msg) {
             $('#test').html('FAIL');
