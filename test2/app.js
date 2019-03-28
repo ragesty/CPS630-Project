@@ -3,24 +3,17 @@ var team = 0;
 var timer = 10;
 var counter = 0;
 
-
-
-/*function setUsername() {
-    myUsername = document.getElementById("username").value;
-    socket.emit('setUsername', myUsername);
-    socket.emit('updateUsers');
-    window.location.href = "./index.html?myVar=" + myUsername;
-}*/
-
+// Get username value from url
 const urlParams = new URLSearchParams(window.location.search);
 var myUsername = urlParams.get("myVar1");
 $('#username1').html(myUsername);
 
+/* Function that end the game*/
 function endGame(teamPoints, playerPoints) {
     $('#test').html('GAME END');
     $('#room').html('GAME END');
     $('#points').html("Team Points " + teamPoints + " Player Points: " + playerPoints);
-    var timeInterval = setInterval(() => {
+    var timeInterval = setInterval(() => { // End game after x amount of seconds
         counter++;
         $('#timer').html("GAME Ending IN: " + (timer - counter));
         if (timer == counter) {
@@ -36,6 +29,8 @@ var app = angular.module("app", []);
 app.controller("cont", function($scope) {
     $scope.words = [];
 
+
+    /*Method that removes word if user entered it*/
     $scope.findword = function(string) {
         for (let i = 0; i < $scope.words.length; i++) {
             if (string === $scope.words[i]) {
@@ -44,10 +39,6 @@ app.controller("cont", function($scope) {
             }
         }
         return false;
-    }
-
-    function wordPoint(word) {
-        return word.length * 10;
     }
 
     $(function() {
@@ -61,6 +52,7 @@ app.controller("cont", function($scope) {
             return false;
         });
 
+        /* Function that updates score*/
         socket.on('updateScore', function(point1, point2) {
             $scope.$apply(function() {
                 $scope.team1Points = point1;
@@ -68,6 +60,9 @@ app.controller("cont", function($scope) {
             });
         });
 
+
+        /* Function that recieves entered messages. If the message is not null, it is sent to the server
+        Which then sets the correct array and gives points to user*/
         socket.on('chat message', function(msg, team, id) {
             $scope.$apply(function() { //APPLIES CHANGE TO FUNCITON
                 if (msg != null && msg != '' && $scope.findword(msg)) {
@@ -77,13 +72,7 @@ app.controller("cont", function($scope) {
             });
         });
 
-
-        /*        socket.on('refresh', function() {
-                    refreshPage();
-                });*/
-
-
-
+        /* Change value of scope array with array from server*/
         socket.on('sentNewArray', function(msg) {
             $scope.$apply(function() {
                 $scope.words = msg;
@@ -91,16 +80,13 @@ app.controller("cont", function($scope) {
         });
 
 
+        /* What to do when all words are empty*/
         socket.on('endGame', function(teamPoints, playerPoints) {
-            //  $('#test').html('GAME END');
-            //$('#room').html('GAME END');
-            //$('#points').html("Team Points " + teamPoints + " Player Points: " + playerPoints);
-
             endGame(teamPoints, playerPoints);
-
         });
 
 
+        /* What to do when enough people are in the game*/
         socket.on('start', function(msg) {
             $('#test').html('PASS');
             $('#room').html(msg);
@@ -118,7 +104,7 @@ app.controller("cont", function($scope) {
             }, 1000);
         });
 
-
+        /* What to do when  not enough people are in room*/
         socket.on('not ready', function(msg) {
             $('#test').html('FAIL');
         });

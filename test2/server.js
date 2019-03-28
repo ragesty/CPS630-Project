@@ -1,9 +1,12 @@
+// Setting up server
 var express = require('express');
 var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 
+/*
+//////////////////// Aquiring handhandhaske module for sockets    NOT USED        ///////////////////////////////
 
 var session = require("express-session")({
     secret: "my-secret",
@@ -24,13 +27,9 @@ io.use(sharedsession(session, {
 io.of('/namespace').use(sharedsession(session, {
     autoSave: true
 }));
+*/
 
-
-
-
-var currentRoom;
 var numofUsers = 0;
-var usernames = {};
 var connections = [];
 var numOfRooms = 0;
 var team = 0;
@@ -47,12 +46,15 @@ app.get('/', function(req, res) {
 
 app.use(express.static(__dirname + '/'));
 
+
+//Function that updates users and assigns them to teams and rooms
 function updateUsers(socket) {
     socket.points = 0;
     numOfRooms = parseInt(connections.length / 3);
     var numClients = 0;
     var newRoom;
 
+    // Join any empty room
     for (let i = 0; i <= numOfRooms; i++) {
         var clientsInRoom = io.nsps['/'].adapter.rooms[i.toString()];
         numClients = clientsInRoom === undefined ? 0 : Object.keys(clientsInRoom.sockets).length;
@@ -60,7 +62,7 @@ function updateUsers(socket) {
         var isStarted = started === undefined ? false : io.sockets.adapter.rooms[i.toString()].start;
 
 
-        if (parseInt(numClients) < numofPlayers && !isStarted) {
+        if (parseInt(numClients) < numofPlayers && !isStarted) { // Join room it it is not already started
             socket.join(i.toString());
             var team1 = (team % 2) + 1;
             team++;
@@ -71,6 +73,7 @@ function updateUsers(socket) {
 
     }
 
+    // If all current rooms are full, create new one.
     if (newRoom === undefined) {
         newRoom = (numOfRooms + 1).toString();
         numOfRooms++;
@@ -80,6 +83,7 @@ function updateUsers(socket) {
     clientsInRoom = io.nsps['/'].adapter.rooms[newRoom];
     numClients = clientsInRoom === undefined ? 0 : Object.keys(clientsInRoom.sockets).length;
 
+    // Set variables if enough people are in room
     if (numClients === numofPlayers) {
         io.to(newRoom).emit('start', newRoom);
         io.sockets.adapter.rooms[newRoom].start = true;
@@ -91,17 +95,16 @@ function updateUsers(socket) {
     } else {
         io.to(newRoom).emit('not ready');
     }
-    //} // END OF BIG ELSE
-} // END OF FUNC
+
+}
 
 
 io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     numofUsers++;
     connections.push(socket);
     socket.points = 0;
-    socket.handshake.session.username = "empty";
-    //socket.handshake.session.username[connections.length];
 
+    // When a new player joins update users
     if (newplayer)
         updateUsers(socket);
     newplayer = false;
@@ -117,65 +120,55 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     });
 
 
+    // Once sever recieves chat message it sets the current room as not updated and emits the socet team and id
     socket.on('chat message', function(msg) {
         io.sockets.adapter.rooms[currentRoom].isUpdated = false;
         io.to(currentRoom).emit('chat message', msg, socket.team, socket.id);
-        usernames[socket.id] = msg;
-
-        // console.log("Socket on team " + socket.team + " Socket id" + socket.id);
-
     });
 
 
+
+    // Functions that gives 10 points per letter
     function wordPoint(word) {
         return word.length * 10;
     }
 
 
-    socket.on('correct', function(team, word, id) { // DIVIDE BY NUMBER OF PEOPLE IN ROOM
-
-
-
-        if (!io.sockets.adapter.rooms[currentRoom].isUpdated) {
+    // If word entered is correct assign points and upate the socket that got it
+    socket.on('correct', function(team, word, id) {
+        if (!io.sockets.adapter.rooms[currentRoom].isUpdated) { // Make sure no other socket has updated points
             if (parseInt(team) === 1) {
                 io.sockets.adapter.rooms[currentRoom].points1 += wordPoint(word);
-                //if (socket.team === 1)
 
             } else if (parseInt(team) === 2) {
                 io.sockets.adapter.rooms[currentRoom].points2 += wordPoint(word);
-
-                //if (socket.team === 2)
-
             }
-            // console.log("Socket on team " + socket.team + " variable:  " + team + " points\n" + "\n-------------------------------------");
 
         }
 
         if (socket.id === id)
             socket.points += wordPoint(word);
 
-
-        console.log("Socket username is " + socket.handshake.session.username + " Socket id" + socket.id);
         io.sockets.adapter.rooms[currentRoom].isUpdated = true;
 
         socket.emit('updateScore', io.sockets.adapter.rooms[currentRoom].points1, io.sockets.adapter.rooms[currentRoom].points2);
 
     });
 
-    socket.on('setUsername', function(name) {
-        socket.handshake.session.username = name;
-        socket.username = name;
-        newplayer = true;
-        socket.handshake.session.save();
 
-        //  console.log(socket.handshake.session.username);
-    });
+    // Set username of Socket NOT USED
+    /*
+        socket.on('setUsername', function(name) {
+            socket.handshake.session.username = name;
+            socket.username = name;
+            newplayer = true;
+            socket.handshake.session.save();
+     });*/
 
 
-
+    // Function that sets room array, if array is empty it emits a end game message to the html files
     socket.on('setArr', function(newWords) {
         io.sockets.adapter.rooms[currentRoom].words = newWords;
-
         if (newWords.length === 0) {
             var teamPoints, playerPoints;
 
