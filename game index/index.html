@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TypeX Legends</title>
+    <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="game_style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body class="light-blue" ng-app='app'>
+    <header class="page-header dark-paths-lighter">
+        <div class="container">
+            <img src="./img/typex_legends_logo.png" alt="Logo" id="logo">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="jumbotron">
+            <div class="row" ng-controller="cont">
+
+                <div class="col-sm-3">
+                    <h1>TEAM 1</h1>
+                    <ul>
+                        <li id="team1username1">Player 1</li>
+                        <li id="team1username2">Player 2</li>
+                        <li id="team1username3">Player 3</li>
+                    </ul>
+                    <h2 id="team1Points">TEAM 1 POINTS: {{ team1Points }}</h2>
+                </div>
+
+                <div class="col-sm-6 text-center align-self-center">
+                    <h1 id="timer">TIMER</h1>
+                    <ul id="messages">
+                        <li ng-repeat="z in words"> {{ z }} </li>
+                    </ul>
+                    <form action="">
+                        <input id="m" autocomplete="off" /><button class="btn btn-success">Send</button>
+                    </form>
+                </div>
+
+                <div class="col-sm-3">
+                    <h1>TEAM 2</h1>
+                    <ul>
+                        <li id="team2username1">Player 1</li>
+                        <li id="team2username2">Player 2</li>
+                        <li id="team2username3">Player 3</li>
+                    </ul>
+                    <h2 id="team2Points">TEAM 2 POINTS: {{ team2Points }}</h2>
+
+
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
