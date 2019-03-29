@@ -10,3 +10,7 @@
     text-align: center;
     padding-top: 50px;
 }
+.centerObject{
+    display: flex;
+    justify-content: center;
+}

@@ -52,3 +52,15 @@ function changePic(id){
     document.getElementById("profPic").src = document.getElementById(id).src;
   }
 }
+
+function changePass(){
+  if(user){
+    firebase.auth().sendPasswordResetEmail(user.email).then(function(){
+      //successfully sent email
+    }).catch(function(error){
+      //there was an error when sending the email
+    });
+  }else{
+    alert("You are not logged in");
+  }
+}
