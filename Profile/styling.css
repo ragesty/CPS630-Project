@@ -1,0 +1,16 @@
+.profileChoose{
+    width: 175px;
+    height: 200px;
+}
+#profPic{
+    width: 300px;
+    height: 350px;
+}
+.centerIt{
+    text-align: center;
+    padding-top: 50px;
+}
+.centerObject{
+    display: flex;
+    justify-content: center;
+}
