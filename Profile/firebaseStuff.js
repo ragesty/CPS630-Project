@@ -36,3 +36,19 @@ function inputInfo(){
 }
 
 window.onload = inputInfo;
+
+function changePic(id){
+  if(user){
+    user.updateProfile({
+      imgURL: "" + document.getElementById(id).src
+    }).then(function(){
+      //successful update
+      imgURL = user.imgURL;
+      document.getElementById("profPic").src = imgURL;
+    }).catch(function(error){
+      alert('An error occured when updating');
+    });
+  }else{
+    document.getElementById("profPic").src = document.getElementById(id).src;
+  }
+}

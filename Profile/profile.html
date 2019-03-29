@@ -28,6 +28,7 @@
         <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-firestore.js"></script>
         
         <script src="firebaseInit.js"></script>
         <script src="firebaseStuff.js"></script>
@@ -36,6 +37,8 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="styling.css">
 
         <title>Profile</title>
     </head>
@@ -61,17 +64,51 @@
             <div class="jumbotron">
                 <div class="media">
                     <div class="media-left">
-                        <img src="http://i.imgur.com/YdhUZdZ.png" class="media-object" id="profPic" >
+                        <img src="http://i.imgur.com/YdhUZdZ.png" class="media-object" id="profPic" data-toggle="modal" data-target="#profileModal">
                         
                     </div>
                     <div class="media-body">
-                        <h1 class="media-heading" style="text-align: center; padding-top: 50px;" id="username">Username will go here</h1>
+                        <h1 class="media-heading centerIt" id="username">Username will go here</h1>
+                        <p class="centerIt">Click on profile picture to change it</p>
                     </div>
                 </div>
             </div>
             <div class="well well-lg">Points: <b id="pts"></b></div>
             <div class="well well-lg">Average WPM: <b id="wpm"></b></div>
             <div class="well well-lg">Accuracy Rating: <b id="accuracy"></b></div>
+        </div>
+
+        <div id="profileModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <!-- Put pictures the user can select in here; 2 pics per row -->
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <img id="gudetama" class="media-object profileChoose" onclick="changePic('gudetama')" src="https://i.pinimg.com/236x/04/38/76/043876c54db5214123d1017bd2e32b5e--sanrio.jpg">
+                                </div>
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-4">
+                                    <img id="saitama" class="media-object profileChoose" onclick="changePic('saitama')" src="http://i.imgur.com/YdhUZdZ.png">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <br>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <img id="monster" class="media-object profileChoose" onclick="changePic('monster')" src="https://www.monstersandcritics.com/wp-content/uploads/2019/01/Monster.jpg">
+                                </div>
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-4">
+                                    <img id="owl" class="media-object profileChoose" onclick="changePic('owl')" src="https://steamuserimages-a.akamaihd.net/ugc/169291094557049787/65FA4DE6C5F7FF5FC42046ED990767642ED4177C/">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </hmtl>
