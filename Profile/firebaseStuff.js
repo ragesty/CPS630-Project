@@ -25,9 +25,9 @@ function inputInfo(){
 
     document.getElementById("username").innerHTML = username;
 
-    document.getElementById("pts").innerHTML = "Points: " + points;
-    document.getElementById("wpm").innerHTML = "Words per minute: " + wpm;
-    document.getElementById("accuracy").innerHTML = "Accuracy: " + accuracy;
+    document.getElementById("pts").innerHTML = points;
+    document.getElementById("wpm").innerHTML = wpm;
+    document.getElementById("accuracy").innerHTML = accuracy;
 
     document.getElementById("profPic").src = imgURL;
   }else{
