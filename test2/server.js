@@ -34,7 +34,7 @@ var connections = [];
 var numOfRooms = 0;
 var team = 0;
 var newplayer = false;
-const numofPlayers = 4;
+const numofPlayers = 2;
 
 http.listen(port, function() {
     console.log("Server started..." + "\nListening on port: " + port + "\n");

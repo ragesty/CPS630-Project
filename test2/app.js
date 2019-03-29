@@ -27,6 +27,8 @@ function endGame(teamPoints, playerPoints) {
 var app = angular.module("app", []);
 app.controller("cont", function($scope) {
     $scope.words = [];
+    $scope.team1 = [];
+    $scope.team2 = [];
 
 
     /*Method that removes word if user entered it*/
@@ -63,22 +65,10 @@ app.controller("cont", function($scope) {
         });
 
 
-        socket.on('setTeam', function(arr, arr1) {
-            var team1String = '';
-            var team2String = '';
+        socket.on('setTeam', function(arr, arr2) {
 
-            for (let i = 0; i < arr.length; i++) {
-                team1String += arr[i] + ' ';
-            }
-
-            console.log(arr1.length, +" " + arr1[0]);
-            for (let j = 0; j < arr1.length; j++) {
-                team2String += arr1[j] + ' ';
-            }
-
-
-            $('#team1').html(team1String);
-            $('#team2').html(team2String);
+            $scope.team1 = arr;
+            $scope.team2 = arr2;
 
         });
 
@@ -110,6 +100,7 @@ app.controller("cont", function($scope) {
 
         /* What to do when enough people are in the game*/
         socket.on('start', function(msg) {
+            $('#numOfPlayers').html("");
             $('#test').html('PASS');
             $('#room').html(msg);
             // socket.emit('setUsername', myUsername);
@@ -129,7 +120,8 @@ app.controller("cont", function($scope) {
 
         /* What to do when  not enough people are in room*/
         socket.on('not ready', function(numPeople) {
-            $('#test').html('FAIL ' + numPeople + "/" + 4 + "joined");
+            $('#timer').html("Waiting for lobby to fill up...");
+            $('#numOfPlayers').html(numPeople + "/" + 2 + " Players");
         });
     });
 });

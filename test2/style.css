@@ -1,49 +1,30 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+header {
+    text-align: center;
+    background-size: 26%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    min-width: 400px;
+    overflow: hidden;
 }
 
-body {
-    font: 13px Helvetica, Arial;
+header h1 {
+    color: #ffffff;
+    font-size: 70px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    text-shadow: 4px 3px 0px #7a7a7a;
 }
 
-form {
-    background: #000;
-    padding: 3px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.light-blue {
+    background-color: lightblue;
 }
 
-form input {
-    border: 0;
-    padding: 10px;
-    width: 90%;
-    margin-right: .5%;
+.light-sky-blue {
+    background-color: lightskyblue;
 }
 
-form button {
-    width: 9%;
-    background: rgb(130, 224, 255);
-    border: none;
-    padding: 10px;
-}
-
-#messages {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-#messages li {
-    padding: 5px 10px;
-}
-
-#messages li:nth-child(odd) {
-    background: #eee;
-}
-
-#messages {
-    margin-bottom: 40px
+#logo {
+    width: 200px;
+    height: auto;
 }

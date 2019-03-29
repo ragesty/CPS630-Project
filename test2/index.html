@@ -2,39 +2,59 @@
 <html>
 
 <head>
-    <title>Socket.IO chat</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TypeX Legends</title>
+    <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js"></script>
 </head>
 
-<body ng-app='app'>
-    <div ng-controller="cont">
+<body class="light-blue" ng-app='app'>
+    <header class="page-header dark-paths-lighter">
+        <div class="container">
+            <img src="./img/typex_legends_logo.png" alt="Logo" id="logo">
+        </div>
+    </header>
 
-        <form ng-submit="setUUID()">
-            <input type="text" ng-model="userID" placeholder="Type your User ID" />
-            <button type="submit">Set User ID</button>
-        </form>
-        <h1 id="username1">USERNAME</h1>
-        <h1 id="test">TEST</h1>
-        <h1>Team 1:
-            <p id='team1'></p>
-        </h1>
-        <h1>Team 2:
-            <p id='team2'></p>
-        </h1>
-        <h1 id="room">ROOM</h1>
-        <h1 id="timer">TIMER</h1>
-        <h1 id="points">{{ team1Points }} {{ team2Points }}</h1>
-        <ul id="messages">
-            <li ng-repeat="z in words"> {{ z }} </li>
-        </ul>
-        <form action="">
-            <input id="m" autocomplete="off" /><button>Send</button>
-        </form>
-    </div>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="app.js"></script>
+    <div class="container">
+        <div class="jumbotron">
+            <div class="row" ng-controller="cont">
+
+                <div class="col-sm-3">
+                    <h1>TEAM 1</h1>
+                    <ul>
+                        <li ng-repeat="player in team1">{{ player }}</li>
+                    </ul>
+                    <h4 id="team1Points">TEAM 1 POINTS: {{ team1Points }}</h4>
+                </div>
+
+                <div class="col-sm-6 text-center align-self-center">
+                    <h1 id="timer"></h1>
+                    <h3 id="numOfPlayers"></h3>
+                    <ul id="messages">
+                        <li ng-repeat="word in words"> {{ word }} </li>
+                    </ul>
+                    <form action="">
+                        <input id="m" autocomplete="off" /><button class="btn btn-success">Send</button>
+                    </form>
+                </div>
+
+                <div class="col-sm-3">
+                    <h1>TEAM 2</h1>
+                    <ul>
+                        <li ng-repeat="player in team2">{{ player }}</li>
+                    </ul>
+                    <h4 id="team2Points">TEAM 2 POINTS: {{ team2Points }}</h4>
+
+
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script src="app.js"></script>
 </body>
 
 </html>

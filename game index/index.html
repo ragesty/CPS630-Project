@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
     <link rel="stylesheet" href="game_style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js"></script>
 </head>
 
 <body class="light-blue" ng-app='app'>
@@ -24,9 +25,7 @@
                 <div class="col-sm-3">
                     <h1>TEAM 1</h1>
                     <ul>
-                        <li id="team1username1">Player 1</li>
-                        <li id="team1username2">Player 2</li>
-                        <li id="team1username3">Player 3</li>
+                        <li id="team1username1" ng-repeat="z in team1">Player 1</li>
                     </ul>
                     <h2 id="team1Points">TEAM 1 POINTS: {{ team1Points }}</h2>
                 </div>
@@ -54,6 +53,9 @@
                 </div>
             </div>
         </div>
+        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script src="app.js"></script>
 </body>
 
 </html>
