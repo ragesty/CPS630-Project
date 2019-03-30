@@ -6,7 +6,6 @@ var counter = 0;
 // Get username value from url
 const urlParams = new URLSearchParams(window.location.search);
 var myUsername = urlParams.get("myVar1");
-$('#username1').html(myUsername);
 
 /* Function that end the game*/
 function endGame(teamPoints, playerPoints) {
@@ -43,6 +42,9 @@ app.controller("cont", function($scope) {
 
     $(function() {
 
+        socket.emit('setUsername', myUsername);
+
+
         $scope.team1Points = 0;
         $scope.team2Points = 0;
         $('form').submit(function() {
@@ -58,6 +60,26 @@ app.controller("cont", function($scope) {
                 $scope.team1Points = point1;
                 $scope.team2Points = point2;
             });
+        });
+
+
+        socket.on('setTeam', function(arr, arr1) {
+            var team1String = '';
+            var team2String = '';
+
+            for (let i = 0; i < arr.length; i++) {
+                team1String += arr[i] + ' ';
+            }
+
+            console.log(arr1.length, +" " + arr1[0]);
+            for (let j = 0; j < arr1.length; j++) {
+                team2String += arr1[j] + ' ';
+            }
+
+
+            $('#team1').html(team1String);
+            $('#team2').html(team2String);
+
         });
 
 
@@ -90,6 +112,7 @@ app.controller("cont", function($scope) {
         socket.on('start', function(msg) {
             $('#test').html('PASS');
             $('#room').html(msg);
+            // socket.emit('setUsername', myUsername);
             var timeInterval = setInterval(() => {
                 counter++;
                 $('#timer').html("GAME STARTING IN: " + (timer - counter));

@@ -34,7 +34,7 @@ var connections = [];
 var numOfRooms = 0;
 var team = 0;
 var newplayer = false;
-const numofPlayers = 2;
+const numofPlayers = 4;
 
 http.listen(port, function() {
     console.log("Server started..." + "\nListening on port: " + port + "\n");
@@ -82,21 +82,27 @@ function updateUsers(socket) {
 
     clientsInRoom = io.nsps['/'].adapter.rooms[newRoom];
     numClients = clientsInRoom === undefined ? 0 : Object.keys(clientsInRoom.sockets).length;
-
     // Set variables if enough people are in room
+
+
+
     if (numClients === numofPlayers) {
         io.to(newRoom).emit('start', newRoom);
+
+        //        console.log(team1Arr + "     " + team2Arr + "...");
         io.sockets.adapter.rooms[newRoom].start = true;
         io.sockets.adapter.rooms[newRoom].points1 = 0;
         io.sockets.adapter.rooms[newRoom].points2 = 0;
         io.sockets.adapter.rooms[newRoom].isUpdated = false;
 
-        console.log(io.sockets.adapter.rooms[newRoom].start);
     } else {
         io.to(newRoom).emit('not ready');
     }
 
 }
+
+
+
 
 
 io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
@@ -105,14 +111,14 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     socket.points = 0;
 
     // When a new player joins update users
-    if (newplayer)
+    if (newplayer) {
+        io.to(currentRoom).emit('chat message', '', socket.team, socket.id);
         updateUsers(socket);
+    }
+
     newplayer = false;
 
-
     var currentRoom = Object.keys(io.sockets.adapter.sids[socket.id])[0];
-
-    console.log(" Num of people " + connections.length + " Socket id is " + socket.id);
 
     socket.on('disconnect', function() {
         numofUsers--;
@@ -124,6 +130,7 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     socket.on('chat message', function(msg) {
         io.sockets.adapter.rooms[currentRoom].isUpdated = false;
         io.to(currentRoom).emit('chat message', msg, socket.team, socket.id);
+        console.log(socket.username);
     });
 
 
@@ -156,8 +163,41 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     });
 
 
-    // Set username of Socket NOT USED
+    socket.on('setUsername', function(name) {
+        // console.log(name);
+        socket.username = name;
 
+
+        var started = io.sockets.adapter.rooms[currentRoom];
+        var isStarted = started === undefined ? false : io.sockets.adapter.rooms[currentRoom].start;
+
+        if (isStarted) {
+            var lobby = io.sockets.adapter.rooms[currentRoom].sockets;
+            var team1Arr = [];
+            var team2Arr = [];
+
+            console.log(lobby);
+
+            for (var socket1 in lobby) {
+
+                var player = io.sockets.connected[socket1];
+
+                console.log(player.team + " " + player.username);
+
+
+                if (player.team === 1)
+                    team1Arr.push(player.username);
+
+                else
+                    team2Arr.push(player.username);
+            }
+
+            io.to(currentRoom).emit('setTeam', team1Arr, team2Arr);
+        }
+        //   console.log(socket.username);
+    });
+
+    // Set username of Socket NOT USED
     socket.on('joinGame', function() {
         newplayer = true;
     });
