@@ -121,15 +121,15 @@ app.controller("cont", function($scope) {
                     $('#timer').html("GAME STARTED");
                     clearInterval(timeInterval); // Stops setInterval from continuing
                     counter = 0; //reset timer
-                    var wordBank = ['hello', 'bye', 'tomorrow', 'tonight'];
+                    var wordBank = ['hello', 'bye', 'tomorrow', 'tonight', 'alligator', 'phonebank', 'computer'];
                     socket.emit('setArr', wordBank);
                 }
             }, 1000);
         });
 
         /* What to do when  not enough people are in room*/
-        socket.on('not ready', function(msg) {
-            $('#test').html('FAIL');
+        socket.on('not ready', function(numPeople) {
+            $('#test').html('FAIL ' + numPeople + "/" + 4 + "joined");
         });
     });
 });

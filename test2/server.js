@@ -96,13 +96,10 @@ function updateUsers(socket) {
         io.sockets.adapter.rooms[newRoom].isUpdated = false;
 
     } else {
-        io.to(newRoom).emit('not ready');
+        io.to(newRoom).emit('not ready', numClients);
     }
 
 }
-
-
-
 
 
 io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
@@ -123,6 +120,19 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     socket.on('disconnect', function() {
         numofUsers--;
         connections.splice(connections.indexOf(socket), 1);
+
+        var started = io.sockets.adapter.rooms[currentRoom];
+        var isStarted = started === undefined ? false : io.sockets.adapter.rooms[currentRoom].start;
+
+        if (!isStarted) {
+            clientsInRoom = io.nsps['/'].adapter.rooms[currentRoom];
+            numClients = clientsInRoom === undefined ? 0 : Object.keys(clientsInRoom.sockets).length;
+            io.to(currentRoom).emit('not ready', numClients);
+        } else {
+            updateUsernameString(currentRoom);
+        }
+
+
     });
 
 
@@ -163,20 +173,15 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     });
 
 
-    socket.on('setUsername', function(name) {
-        // console.log(name);
-        socket.username = name;
 
-
-        var started = io.sockets.adapter.rooms[currentRoom];
-        var isStarted = started === undefined ? false : io.sockets.adapter.rooms[currentRoom].start;
+    function updateUsernameString(room) {
+        var started = io.sockets.adapter.rooms[room];
+        var isStarted = started === undefined ? false : io.sockets.adapter.rooms[room].start;
 
         if (isStarted) {
-            var lobby = io.sockets.adapter.rooms[currentRoom].sockets;
+            var lobby = io.sockets.adapter.rooms[room].sockets;
             var team1Arr = [];
             var team2Arr = [];
-
-            console.log(lobby);
 
             for (var socket1 in lobby) {
 
@@ -192,8 +197,19 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
                     team2Arr.push(player.username);
             }
 
-            io.to(currentRoom).emit('setTeam', team1Arr, team2Arr);
+            io.to(room).emit('setTeam', team1Arr, team2Arr);
         }
+    }
+
+
+
+
+    socket.on('setUsername', function(name) {
+        // console.log(name);
+        socket.username = name;
+
+        updateUsernameString(currentRoom);
+
         //   console.log(socket.username);
     });
 
