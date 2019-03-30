@@ -8,9 +8,9 @@ const urlParams = new URLSearchParams(window.location.search);
 var myUsername = urlParams.get("myVar1");
 
 /* Function that end the game*/
-function endGame(teamPoints, playerPoints) {
+function endGame(teamPoints, playerPoints, teamPoints2) {
     $('#test').html('GAME END');
-    $('#room').html('GAME END');
+    $('#numOfPlayers').html("Your team: " + teamPoints + "   Opponents: " + teamPoints2);
     $('#points').html("Team Points " + teamPoints + " Player Points: " + playerPoints);
     var timeInterval = setInterval(() => { // End game after x amount of seconds
         counter++;
@@ -93,8 +93,20 @@ app.controller("cont", function($scope) {
 
 
         /* What to do when all words are empty*/
-        socket.on('endGame', function(teamPoints, playerPoints) {
-            endGame(teamPoints, playerPoints);
+        socket.on('endGame', function(teamPoints, playerPoints, teamPoints2) {
+            endGame(teamPoints, playerPoints, teamPoints2);
+        });
+
+        socket.on('endGameWin', function(teamPoints, playerPoints, teamPoints2) {
+            endGame(teamPoints, playerPoints, teamPoints2);
+            $('#win').html('Victory');
+        });
+
+
+
+        socket.on('endGameLose', function(teamPoints, playerPoints, teamPoints2) {
+            endGame(teamPoints, playerPoints, teamPoints2);
+            $('#win').html('Defeat');
         });
 
 

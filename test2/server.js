@@ -222,16 +222,35 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
     // Function that sets room array, if array is empty it emits a end game message to the html files
     socket.on('setArr', function(newWords) {
         io.sockets.adapter.rooms[currentRoom].words = newWords;
+
+
         if (newWords.length === 0) {
             var teamPoints, playerPoints;
 
-            if (socket.team === 1)
-                teamPoints = io.sockets.adapter.rooms[currentRoom].points1;
-            else
-                teamPoints = io.sockets.adapter.rooms[currentRoom].points2;
+            if (io.sockets.adapter.rooms[currentRoom].points1 > io.sockets.adapter.rooms[currentRoom].points2)
+                if (socket.team === 1) {
+                    teamPoints = io.sockets.adapter.rooms[currentRoom].points1;
+                    playerPoints = socket.points;
+                    socket.emit('endGameWin', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points2);
+                } else {
+                    teamPoints = io.sockets.adapter.rooms[currentRoom].points2;
+                    playerPoints = socket.points;
+                    socket.emit('endGameLose', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points1);
+                }
 
-            playerPoints = socket.points;
-            socket.emit('endGame', teamPoints, playerPoints);
+            else
+            if (socket.team === 2) {
+                teamPoints = io.sockets.adapter.rooms[currentRoom].points2;
+                playerPoints = socket.points;
+                socket.emit('endGameWin', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points1);
+            } else {
+                teamPoints = io.sockets.adapter.rooms[currentRoom].points1;
+                playerPoints = socket.points;
+                socket.emit('endGameLose', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points2);
+            }
+
+
+
         }
 
         io.to(currentRoom).emit('sentNewArray', io.sockets.adapter.rooms[currentRoom].words);
