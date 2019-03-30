@@ -1,8 +1,9 @@
+* {
+    font-family: 'Armata', sans-serif;
+}
+
 header {
     text-align: center;
-    background-size: 26%;
-    padding-top: 20px;
-    padding-bottom: 20px;
     min-width: 400px;
     overflow: hidden;
 }
@@ -20,11 +21,20 @@ header h1 {
     background-color: lightblue;
 }
 
-.light-sky-blue {
-    background-color: lightskyblue;
+.navy {
+    background-color: navy;
+}
+
+.dark-grey {
+    background-color: #292727;
 }
 
 #logo {
-    width: 200px;
+    width: 300px;
     height: auto;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
 }

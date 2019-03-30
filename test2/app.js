@@ -1,6 +1,7 @@
 var socket = io();
 var team = 0;
-var timer = 10;
+var timer1 = 10;
+var timer2 = 15;
 var counter = 0;
 
 // Get username value from url
@@ -10,12 +11,13 @@ var myUsername = urlParams.get("myVar1");
 /* Function that end the game*/
 function endGame(teamPoints, playerPoints, teamPoints2) {
     $('#test').html('GAME END');
-    $('#numOfPlayers').html("Your team: " + teamPoints + "   Opponents: " + teamPoints2);
-    $('#points').html("Team Points " + teamPoints + " Player Points: " + playerPoints);
+    $('#endGamePoints1').html("Your team points: " + teamPoints);
+    $('#endGamePoints2').html("Opponent team points: " + teamPoints2);
+    $('#points').html("Team Points: " + teamPoints + " Player Points: " + playerPoints);
     var timeInterval = setInterval(() => { // End game after x amount of seconds
         counter++;
-        $('#timer').html("GAME Ending IN: " + (timer - counter));
-        if (timer == counter) {
+        $('#timer').html("GAME ENDING IN: " + (timer2 - counter));
+        if (timer2 == counter) {
             counter = 0; //reset timer
             window.location.href = "./login.html";
         }
@@ -99,14 +101,14 @@ app.controller("cont", function($scope) {
 
         socket.on('endGameWin', function(teamPoints, playerPoints, teamPoints2) {
             endGame(teamPoints, playerPoints, teamPoints2);
-            $('#win').html('Victory');
+            $('#win').html('VICTORY');
         });
 
 
 
         socket.on('endGameLose', function(teamPoints, playerPoints, teamPoints2) {
             endGame(teamPoints, playerPoints, teamPoints2);
-            $('#win').html('Defeat');
+            $('#win').html('DEFEAT');
         });
 
 
@@ -118,8 +120,8 @@ app.controller("cont", function($scope) {
             // socket.emit('setUsername', myUsername);
             var timeInterval = setInterval(() => {
                 counter++;
-                $('#timer').html("GAME STARTING IN: " + (timer - counter));
-                if (timer == counter) {
+                $('#timer').html("GAME STARTING IN: " + (timer1 - counter));
+                if (timer1 == counter) {
                     // When timer reaches 0
                     $('#timer').html("GAME STARTED");
                     clearInterval(timeInterval); // Stops setInterval from continuing
@@ -133,7 +135,7 @@ app.controller("cont", function($scope) {
         /* What to do when  not enough people are in room*/
         socket.on('not ready', function(numPeople) {
             $('#timer').html("Waiting for lobby to fill up...");
-            $('#numOfPlayers').html(numPeople + "/" + 2 + " Players");
+            $('#numOfPlayers').html(numPeople + " / " + 2 + " Players");
         });
     });
 });
