@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Typex Legends</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="index_style.css">
+        <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+        <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBV_3f1CSrUJcQ_0eNtMT3yVFkeIIHtplw",
+            authDomain: "cps630-1a48f.firebaseapp.com",
+            databaseURL: "https://cps630-1a48f.firebaseio.com",
+            projectId: "cps630-1a48f",
+            storageBucket: "cps630-1a48f.appspot.com",
+            messagingSenderId: "645223268457"
+        };
+        firebase.initializeApp(config);
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+				<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+				<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js"></script>
+    		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+				<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+				<!--
+				<script>
+
+						var socket = io();
+						function setUsername() {
+								var myUsername = document.getElementById("username").value;
+								socket.emit('joinGame');
+								window.location.href = "./index.html?myVar1=" + myUsername;
+						}
+				</script> 
+				-->
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">TypeX Legends</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="#">Shop</a></li>
+					<li><a href="#">Leaderboards</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<a class="navbar-brand" href="#">Welcome to TypeX Legends, Username.</a>
+					
+				</ul>
+            </div>
+        </nav>
+			<div class="container">
+					<div class="jumbotron">
+						<h1>TypeX Legends</h1> 
+						<p>Welcome to TypeX Legends, the fast, fun typing-racing game to test your typing skills, or improve them!</p>
+						<button type="button" class="btn btn-info">Play Now!</button>
+					</div>
+				</div>
+    </body>
+</html>
