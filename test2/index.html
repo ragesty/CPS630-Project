@@ -1,92 +1,132 @@
+<!-- User profile page -->
+<!-- 
+    Will need:
+        get user's info from database based on their userID
+            Points
+            Average WPM
+            Win/loss ratio
+            Accuracy rating
+            Username
+            Profile picture
+
+        Option to reset password??
+            Will need to send an email to them with a link
+        
+        https://firebase.google.com/docs/reference/js/firebase.database.Query
+        https://firebase.google.com/docs/database/web/read-and-write
+
+-->
+
 <!DOCTYPE html>
+
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>TypeX Legends</title>
-    <link href="https://fonts.googleapis.com/css?family=Armata" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-firestore.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <title>Profile</title>
 </head>
 
-<body class="dark-grey" ng-app='app'>
-    <header class="page-header">
-        <div class="container">
-            <img src="./img/typex_legends_logo_white.png" alt="Logo" id="logo">
-        </div>
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">|||
-                <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <li><a href="#">NewGame</a></li>
-                <li><a href="#">Profile/Stats</a></li>
-                <li><a href="#">Leadership board</a></li>
-                <li><a href="#">Leave game</a></li>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand">TypeX Legends</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="./index.html">Home</a></li>
+                <li><a>Page 1</a></li>
+                <li><a>Page 2</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
             </ul>
         </div>
-    </header>
+    </nav>
+    <div class="container">
 
-    <div class="row">
+        <div class="jumbotron">
+            <div class="media">
+                <div class="media-left">
+                    <img src="http://i.imgur.com/YdhUZdZ.png" class="media-object" id="profPic" data-toggle="modal" data-target="#profileModal">
 
-        <!--Left side ads-->
-        <div class="col-sm-2"></div>
-
-        <!--Main game container-->
-        <div class="col-sm-8">
-            <div class="jumbotron">
-                <div class="row" ng-controller="cont">
-
-                    <!--Team 1 container-->
-                    <div class="col-sm-3 text-center">
-                        <h1><b>TEAM 1</b></h1>
-                        <ul>
-                            <li class="list-group-item list-group-item-info" ng-repeat="player in team1">{{ player }}</li>
-                        </ul>
-                        <h4>TEAM POINTS</h4>
-                        <h4 id="team1Points">{{ team1Points }}</h4>
-                    </div>
-
-                    <!--Gameplay container-->
-                    <div class="col-sm-6 text-center align-self-center">
-                        <h3 id="timer"></h3>
-                        <h1 id="win"></h1>
-                        <h4 id="numOfPlayers"></h4>
-                        <h4 id="endGamePoints1"></h4>
-                        <h4 id="endGamePoints2"></h4>
-                        <ul>
-                            <li class="list-group-item list-group-item-primary" ng-repeat="word in words"> {{ word }} </li>
-                        </ul>
-                        <form>
-                            <div class="input-group input-group-lg">
-
-                                <input id="m" type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
-
-                            </div>
-                        </form>
-                    </div>
-
-                    <!--Team 2 container-->
-                    <div class="col-sm-3 text-center">
-                        <h1><b>TEAM 2</b></h1>
-                        <ul>
-                            <li class="list-group-item list-group-item-warning" ng-repeat="player in team2">{{ player }}</li>
-                        </ul>
-                        <h4>TEAM POINTS</h4>
-                        <h4 id="team1Points">{{ team2Points }}</h4>
-                    </div>
+                </div>
+                <div class="media-body">
+                    <h1 class="media-heading centerIt" id="username">Username will go here</h1>
+                    <p class="centerIt">Click on profile picture to change it</p>
                 </div>
             </div>
         </div>
 
-        <!--Right side ads-->
-        <div class="col-sm-2"></div>
+        <div class="well well-lg">Points: <b id="pts"></b></div>
 
+        <div class="centerObject">
+            <button type="button" class="btn btn-default btn-lg" onclick="changePass()">Reset Password</button>
+            <button type="button" class="btn btn-success btn-lg" onclick="setUsername()">Join Game</button>
+        </div>
     </div>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="app.js"></script>
+
+    <div id="profileModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- Put pictures the user can select in here; 2 pics per row -->
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <img id="gudetama" class="media-object profileChoose" onclick="changePic('gudetama')" src="https://i.pinimg.com/236x/04/38/76/043876c54db5214123d1017bd2e32b5e--sanrio.jpg">
+                            </div>
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <img id="saitama" class="media-object profileChoose" onclick="changePic('saitama')" src="http://i.imgur.com/YdhUZdZ.png">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <img id="monster" class="media-object profileChoose" onclick="changePic('monster')" src="https://www.monstersandcritics.com/wp-content/uploads/2019/01/Monster.jpg">
+                            </div>
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <img id="owl" class="media-object profileChoose" onclick="changePic('owl')" src="https://steamuserimages-a.akamaihd.net/ugc/169291094557049787/65FA4DE6C5F7FF5FC42046ED990767642ED4177C/">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="firebaseInit.js"></script>
+    <script src="firebaseStuff.js"></script>
+
+    <script>
+        var socket = io();
+
+        function setUsername() {
+            var myUsername = $("#username").text();
+            socket.emit('joinGame');
+            console.log(myUsername);
+            window.location.href = "./game.html?myVar1=" + myUsername;
+        }
+    </script>
 </body>
 
 </html>

@@ -19,7 +19,7 @@ function endGame(teamPoints, playerPoints, teamPoints2) {
         $('#timer').html("GAME ENDING IN: " + (timer2 - counter));
         if (timer2 == counter) {
             counter = 0; //reset timer
-            window.location.href = "./login.html";
+            window.location.href = "./index.html";
         }
     }, 1000);
 
@@ -95,8 +95,9 @@ app.controller("cont", function($scope) {
 
 
         /* What to do when all words are empty*/
-        socket.on('endGame', function(teamPoints, playerPoints, teamPoints2) {
+        socket.on('endGameTie', function(teamPoints, playerPoints, teamPoints2) {
             endGame(teamPoints, playerPoints, teamPoints2);
+            $('#win').html('DRAW');
         });
 
         socket.on('endGameWin', function(teamPoints, playerPoints, teamPoints2) {

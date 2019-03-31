@@ -238,17 +238,28 @@ io.on('connection', function(socket) { // SOCKET.ID IS UNIQE TO EACH PERSON
                     socket.emit('endGameLose', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points1);
                 }
 
-            else
-            if (socket.team === 2) {
-                teamPoints = io.sockets.adapter.rooms[currentRoom].points2;
-                playerPoints = socket.points;
-                socket.emit('endGameWin', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points1);
-            } else {
-                teamPoints = io.sockets.adapter.rooms[currentRoom].points1;
-                playerPoints = socket.points;
-                socket.emit('endGameLose', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points2);
-            }
+            else if (io.sockets.adapter.rooms[currentRoom].points1 < io.sockets.adapter.rooms[currentRoom].points2)
+                if (socket.team === 2) {
+                    teamPoints = io.sockets.adapter.rooms[currentRoom].points2;
+                    playerPoints = socket.points;
+                    socket.emit('endGameWin', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points1);
+                } else {
+                    teamPoints = io.sockets.adapter.rooms[currentRoom].points1;
+                    playerPoints = socket.points;
+                    socket.emit('endGameLose', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points2);
+                }
 
+            else {
+                if (socket.team === 2) {
+                    teamPoints = io.sockets.adapter.rooms[currentRoom].points2;
+                    playerPoints = socket.points;
+                    socket.emit('endGameTie', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points1);
+                } else {
+                    teamPoints = io.sockets.adapter.rooms[currentRoom].points1;
+                    playerPoints = socket.points;
+                    socket.emit('endGameTie', teamPoints, playerPoints, io.sockets.adapter.rooms[currentRoom].points2);
+                }
+            }
 
 
         }

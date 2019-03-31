@@ -118,23 +118,11 @@
             <h1>TypeX Legends</h1>
             <p>Welcome to TypeX Legends, the fast, fun typing-racing game to test your typing skills, or improve them!</p>
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Sign Up Now!</button>
-
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" id="username" placeholder="Enter Username">
-                <button class="btn btn-success" onclick="setUsername()">Set Username And Join</button>
-            </div>
         </div>
     </div>
 
-    <script>
-        var socket = io();
-
-        function setUsername() {
-            var myUsername = document.getElementById("username").value;
-            socket.emit('joinGame');
-            window.location.href = "./index.html?myVar1=" + myUsername;
-        }
-    </script>
+    <script src="firebaseInit.js"></script>
+    <script src="firebaseStuff.js"></script>
 </body>
 
 </html>
