@@ -3,6 +3,28 @@ var team = 0;
 var timer1 = 10;
 var timer2 = 15;
 var counter = 0;
+var wordArray = [];
+
+// Initialize Firebase
+(function() {
+    var config = {
+        apiKey: "AIzaSyBV_3f1CSrUJcQ_0eNtMT3yVFkeIIHtplw",
+        authDomain: "cps630-1a48f.firebaseapp.com",
+        databaseURL: "https://cps630-1a48f.firebaseio.com",
+        projectId: "cps630-1a48f",
+        storageBucket: "cps630-1a48f.appspot.com",
+        messagingSenderId: "645223268457"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+    var wordsRef = database.ref().child('words');
+    wordsRef.on('value', function(data) {
+        wordArray = data.val();
+        console.log(wordArray);
+    });
+}());
 
 // Get username value from url
 const urlParams = new URLSearchParams(window.location.search);
@@ -22,9 +44,12 @@ function endGame(teamPoints, playerPoints, teamPoints2) {
             window.location.href = "./index.html";
         }
     }, 1000);
-
 }
 
+function removeArrayDuplicates(array) {
+    let unique = [...new Set(array)];
+    return unique;
+}
 
 var app = angular.module("app", []);
 app.controller("cont", function($scope) {
@@ -127,7 +152,18 @@ app.controller("cont", function($scope) {
                     $('#timer').html("GAME STARTED");
                     clearInterval(timeInterval); // Stops setInterval from continuing
                     counter = 0; //reset timer
-                    var wordBank = ['hello', 'bye', 'tomorrow', 'tonight', 'alligator', 'phonebank', 'computer'];
+                    var wordBank = [];
+                    //wordBank = ['hello', 'bye', 'tomorrow', 'tonight', 'alligator', 'phonebank', 'computer'];
+
+                    // Insert random words from Firebase database word bank into an array "wordBank"
+                    while (wordBank.length < 10) {
+                        var word = wordArray[Math.floor(Math.random() * wordArray.length)];
+                        wordBank.push(word);
+                        wordBank = removeArrayDuplicates(wordBank);
+                    }
+
+                    // Send "wordBank" to the game
+                    console.log(wordBank);
                     socket.emit('setArr', wordBank);
                 }
             }, 1000);
