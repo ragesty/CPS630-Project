@@ -1,5 +1,6 @@
-var user;
-var points, username, imgURL;
+var database = firebase.database();
+var userID;
+var points, username, profile_picture;
 
 window.onload = inputInfo;
 
@@ -7,10 +8,10 @@ function signOut(){
   // Sign out of Firebase.
   firebase.auth().signOut()
     .then(function(){
-      //redirect to home page, maybe??
+      //redirect to home page
       if(typeof(Storage) !== "undefined"){
         //reset the session, so that the user's info isn't there anymore
-        sessionStorage.user = "";
+        sessionStorage.userID = null;
       }
       window.location = "./index.html";
     }).catch(function(error){
@@ -22,56 +23,44 @@ function signOut(){
 function inputInfo(){
   //input the information where it belongs
   if(typeof(Storage) !== "undefined"){
-    if(sessionStorage.user){
-      user = sessionStorage.user;
+    if(sessionStorage.userID){
+      userID = sessionStorage.userID;
     }else{
-      //this can probably get deleted later on
-      alert('no session');
+      alert('You are not logged in!');
     }
-}
-  if(user){
-    points = user.points;
-    username = user.username;
-    imgURL = user.photoURL;
+  }
+  if(userID){
+    database.ref('users/' + userID)
+      .once("value")
+        .then(function(snapshot){
+          points = snapshot.val().points;
+          username = snapshot.val().username;
+          profile_picture = snapshot.val().profile_picture;
 
-    //document.getElementById("username").innerHTML = username;
-
-    //document.getElementById("pts").innerHTML = points;
-
-    //document.getElementById("profPic").src = imgURL;
-
-    //once the database has been configured, this will be changed
-
-    document.getElementById("username").innerHTML = "username";
-    document.getElementById("pts").innerHTML = "points";
-    document.getElementById("profPic").src = "http://i.imgur.com/YdhUZdZ.png";
+          document.getElementById("username").innerHTML = username;
+          document.getElementById("pts").innerHTML = points;
+          document.getElementById("profPic").src = profile_picture;
+        }
+      );
   }else{
     alert('You are not logged in!');
   } 
 }
 
 function changePic(id){
-  //this is currently under construction
-  if(user){
-    user.updateProfile({
-      photoURL: "" + document.getElementById(id).src
-    }).then(function(){
-      //successful update
-      imgURL = user.photoURL;
-      document.getElementById("profPic").src = imgURL;
-    }).catch(function(error){
-      alert('An error occured when updating');
-    });
+  if(userID){
+    var newPic = document.getElementById(id).src;
+    database.ref("users/" + userID + "/profile_picture").set(newPic);
+    inputInfo();
   }else{
-    //document.getElementById("profPic").src = document.getElementById(id).src;
     alert('You are not logged in!');
   }
 }
 
 function changePass(){
   //this too is under construction
-  if(user){
-    firebase.auth().sendPasswordResetEmail(user.email).then(function(){
+  if(userID){
+    firebase.auth().sendPasswordResetEmail(userID.email).then(function(){
       //successfully sent email
       alert('Email sent successfully!');
     }).catch(function(error){
