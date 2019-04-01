@@ -23,6 +23,16 @@
         <div class="container">
             <img src="./img/typex_legends_logo_white.png" alt="Logo" id="logo">
         </div>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">|||
+                <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#">NewGame</a></li>
+                <li><a href="#">Profile/Stats</a></li>
+                <li><a href="#">Leadership board</a></li>
+                <li><a href="#">Leave game</a></li>
+            </ul>
+        </div>
     </header>
 
     <div class="row">
@@ -32,7 +42,7 @@
 
         <!--Main game container-->
         <div class="col-sm-8">
-            <div class="jumbotron">
+            <div class="jumbotron bg">
                 <div class="row" ng-controller="cont">
 
                     <!--Team 1 container-->
@@ -52,11 +62,11 @@
                         <h4 id="numOfPlayers"></h4>
                         <h4 id="endGamePoints1"></h4>
                         <h4 id="endGamePoints2"></h4>
-                        <ul>
-                            <li class="list-group-item list-group-item-primary" ng-repeat="word in words"> {{ word }} </li>
+                        <ul class="columns2">
+                            <li class="list-group-item list-group-item-light rounded-pill display-inline-block" ng-repeat="word in words"> {{ word }} </li>
                         </ul>
                         <form>
-                            <div class="input-group input-group-lg">
+                            <div class="input-group input-group-lg border border-dark">
 
                                 <input id="m" type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
 
