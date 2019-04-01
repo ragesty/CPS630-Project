@@ -5,6 +5,7 @@ var nickname, email, uid;
 window.onload = function(){
     firebase.auth().onAuthStateChanged(function(usr){
         if(usr){
+            alert("you're logged in");
             var path_patt = /index.html/;
             if(window.location.pathname.match(path_patt)){
                 window.location="loggedIn.html";
@@ -68,6 +69,7 @@ function signOut(){
     firebase.auth().signOut().then(function(){
         alert("You have successfully signed out!");
         sessionStorage.userID = null;
+        window.location="index.html";
     }).catch(function(error){
         alert('you really fucked up here');
     });

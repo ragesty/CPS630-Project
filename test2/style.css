@@ -80,6 +80,8 @@ hr.new {
     background-size: cover;
 }
 
-.display-inline-block {
-    display: inline-block;
+.columns2 {
+    list-style-type: disc;
+    columns: 2;
+    list-style-position: inside;
 }
