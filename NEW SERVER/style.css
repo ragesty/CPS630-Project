@@ -1,0 +1,91 @@
+* {
+    font-family: 'Armata', sans-serif;
+}
+
+header {
+    text-align: center;
+    min-width: 400px;
+    overflow: hidden;
+}
+
+header h1 {
+    color: #ffffff;
+    font-size: 70px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    text-shadow: 4px 3px 0px #7a7a7a;
+}
+
+.light-blue {
+    background-color: lightblue;
+}
+
+.navy {
+    background-color: navy;
+}
+
+.dark-grey {
+    background-color: #292727;
+}
+
+#logo {
+    width: 300px;
+    height: auto;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+.profileChoose {
+    width: 175px;
+    height: 200px;
+}
+
+#profPic {
+    width: 300px;
+    height: 350px;
+}
+
+.centerIt {
+    text-align: center;
+    padding-top: 50px;
+}
+
+.centerObject {
+    display: flex;
+    justify-content: center;
+}
+
+hr.new {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+}
+
+.bg {
+    /* The image used */
+    background-image: url("http://www.retreatstroud.com/wp-content/uploads/2016/05/crafted-paper-pattern-Grey-Seamless-Pattern-For-Website-Background.jpg");
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.height-400 {
+    height: 400px;
+}
+
+.columns2 {
+    list-style-type: disc;
+    columns: 2;
+    list-style-position: inside;
+}
