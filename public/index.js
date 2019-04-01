@@ -2,50 +2,110 @@ var database = firebase.database();
 var user = firebase.auth().currentUser;
 var nickname, email, uid;
 
+window.onload = function(){
+    firebase.auth().onAuthStateChanged(function(usr){
+        if(usr){
+            var path_patt = /index.html/;
+            if(window.location.pathname.match(path_patt)){
+                window.location="loggedIn.html";
+            }
+            firebase.database().ref('users/' + usr.uid).on('value', function(snapshot) {
+                //This is the way to fill in information straight away.
+                document.getElementById("usr_nickname").innerText = "You're logged in as: " + snapshot.val().username;
+            });
 
+        }
+    })
+}
+function signup_conf(){
+    var usr_name = document.getElementById("s_name").value;
+    var usr_email = document.getElementById("s_email").value;
+    var usr_pass = document.getElementById("s_pwd").value;
+    var usr_passcfmn = document.getElementById("s_pwdcfmn").value;
+    if(usr_pass != usr_passcfmn){
+        alert("Your passwords are not matching");
+    } else{
+        createUserAcc(usr_name, usr_email,usr_pass);
+    }
+}
+
+function createUserAcc(usr_name, usr_email,usr_pass){
+    firebase.auth().createUserWithEmailAndPassword(usr_email, usr_pass).catch(function(error) {
+        alert(error.code + ": " + error.message);
+        // ...
+    });
+    firebase.auth().onAuthStateChanged(function(usr){
+        if(usr){
+            firebase.database().ref('users/' + usr.uid).set({
+                username: usr_name,
+                points: 0,
+                profile_picture: "http://i.imgur.com/YdhUZdZ.png"
+            });
+            firebase.auth().signOut().catch(function(error){
+                alert(error.code + ": " + error.message);
+            })
+            $("signupModal").modal("toggle");
+        }
+    });
+    
+}
+
+function signingIn(){
+    //retrieved from the login Modal on the main page.
+    var usr_email = document.getElementById("l_email").value;
+    var usr_pwd = document.getElementById("l_pwd").value;
+    firebase.auth().signInWithEmailAndPassword(usr_email, usr_pwd).then(function(usr){
+        if(typeof(Storage) !== "undefined"){
+            sessionStorage.userID = usr.uid;
+        }
+        window.location="loggedIn.html";
+    },function(error){
+        alert(error.code + "\n" + error.message);
+    });
+}
+
+function signOut(){
+    firebase.auth().signOut().then(function(){
+        alert("You have successfully signed out!");
+        sessionStorage.userID = null;
+    }).catch(function(error){
+        alert('you really fucked up here');
+    });
+}
+
+
+
+function playNowLoggedOff(){
+    alert("Please sign up to play!");
+}
+
+
+
+
+/******************************************** ORIGINAL CODE.
 window.onload = function () {
     updateLogin();
 }
 
-//Essentially just signup confirmation.
 function signup_conf(){
-    //retrieved from the modal signup fields.
     var usr_email = document.getElementById("s_email").value;
     var usr_pass = document.getElementById("s_pwd").value;
     var usr_passcfmn = document.getElementById("s_pwdcfmn").value;
-    //RegExp for the email pattern, essentially it needs @ and .
-    var email_patt = /[@][\D]+[.][\D]+/g;
-    if (!usr_email.match(email_patt)){
-        alert("your email address is not valid");
-    } else if (usr_pass != usr_passcfmn){
+    if (usr_pass != usr_passcfmn){
         alert("Your passwords are not matching");
     } else{
-        //anything else not covered in making a proper account will be covered by firebase.
         createUserAcc(usr_email,usr_pass);
     }
 }
 
-//Self explanatory name.
 function createUserAcc(email, pass){
     firebase.auth().createUserWithEmailAndPassword(email, pass).then(function(usr){
-        alert("You have successfully signed up");
+        signUpProcess();
     },function(error){
         alert("This is createUserAcc" + error.code + "\n" + error.message);
     });
-    $('#myModal').modal("hide");
 }
 
-function fillUserAcc(){
-    //Creates the profile, currently only contains the username and the profile picture path.
-    firebase.database().ref('Profiles/' + user.uid).set({
-        username: player,
-        profile_picture: null
-    });
-    //Creates the points with the userID as the key.
-    firebase.database().ref('Points/' + user.uid).set({
-        points: 0
-    });
-}
 function signingIn(){
     //retrieved from the login Modal on the main page.
     var usr_email = document.getElementById("l_email").value;
@@ -61,7 +121,6 @@ function signingIn(){
 function updateLogin(){
     firebase.auth().onAuthStateChanged(function(usr){
     if(usr){
-            uid = usr.uid;
             document.getElementById("logged_out_nav").style.display="none";
             document.getElementById("logged_in_nav").style.display="inherit";
             document.getElementById("lo-home").style.display="none";
@@ -84,5 +143,15 @@ function signOut(){
 }
 
 function getNickName(){
-    document.write("test");
+    var rand = Math.floor(Math.random() * 10);
+    firebase.database().ref('/placeholder_names/'+ rand).once('value').then(function(snapshot){
+        nickname = (snapshot.val()) || 'Anonymous';
+    })
+    alert(nickname);
 }
+
+function writeNickName(){
+    document.write(nickname);
+}
+
+*/

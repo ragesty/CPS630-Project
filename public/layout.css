@@ -1,0 +1,38 @@
+header {
+  text-align: center;
+  background-size: 26%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  min-width: 400px;
+  overflow: hidden;
+}
+
+header h1 {
+  color: #ffffff;
+  font-size: 70px;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  text-shadow: 4px 3px 0px #7a7a7a;
+}
+
+.modal-content {
+  background-color: lightgrey;
+}
+
+.light-blue {
+  background-color: lightblue;
+}
+
+.light-sky-blue {
+  background-color: lightskyblue;
+}
+
+#logo {
+  width: 200px;
+  height: auto;
+}
+
+.darkgrey{
+  background-color: #292727;
+}
