@@ -28,7 +28,7 @@ var wordArray = [];
 
 // Get username value from url
 const urlParams = new URLSearchParams(window.location.search);
-var myUsername = urlParams.get("myVar1");
+var myUserName = localStorage.getItem("userName");
 
 /* Function that end the game*/
 function endGame(teamPoints, playerPoints, teamPoints2) {
@@ -70,9 +70,6 @@ app.controller("cont", function($scope) {
     }
 
     $(function() {
-
-        socket.emit('setUsername', myUsername);
-
 
         $scope.team1Points = 0;
         $scope.team2Points = 0;
@@ -119,15 +116,33 @@ app.controller("cont", function($scope) {
         });
 
 
+        function addPoints(points1) {
+            firebase.auth().onAuthStateChanged(function(usr) {
+                if (usr)
+                    firebase.database().ref('users/' + usr.uid).once('value').then(function(snapshot) {
+                        var oldPoints = snapshot.val().points;
+                        firebase.database().ref('users/' + usr.uid + '/points').set(oldPoints + points1);
+                    });
+
+                else
+                    alert("You are not logged in");
+            });
+
+        }
+
+
+
         /* What to do when all words are empty*/
         socket.on('endGameTie', function(teamPoints, playerPoints, teamPoints2) {
             endGame(teamPoints, playerPoints, teamPoints2);
             $('#win').html('DRAW');
+            addPoints(playerPoints);
         });
 
         socket.on('endGameWin', function(teamPoints, playerPoints, teamPoints2) {
             endGame(teamPoints, playerPoints, teamPoints2);
             $('#win').html('VICTORY');
+            addPoints(playerPoints);
         });
 
 
@@ -135,6 +150,7 @@ app.controller("cont", function($scope) {
         socket.on('endGameLose', function(teamPoints, playerPoints, teamPoints2) {
             endGame(teamPoints, playerPoints, teamPoints2);
             $('#win').html('DEFEAT');
+            addPoints(playerPoints);
         });
 
 

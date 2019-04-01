@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -20,10 +23,6 @@
         };
         firebase.initializeApp(config);
     </script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <!-- 
@@ -33,11 +32,14 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="index.js"></script>
+    <script>
+        var socket = io();
 
-
-
-
-
+        function joinGame() {
+            socket.emit('joinGame');
+            window.location = "game.html";
+        }
+    </script>
 </head>
 
 <body class="darkgrey" ng-app='app'>
@@ -56,12 +58,14 @@
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a onclick="playNowLoggedOff();">Play Now!</a></li>
+                <li><a href="game.html" onclick="joinGame(); return false;">Play Now!</a></li>
                 <li><a href="leaderboards.html">Leaderboards</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#" data-toggle="modal" data-target="#signupModal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li>
+                    <a id="usr_nickname"></a>
+                </li>
+                <li><a onclick="signOut();"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div>
     </nav>
@@ -79,19 +83,15 @@
                 <div class="modal-body">
                     <p>Please fill in your credentials to create an account.</p>
                     <div class="form-group">
-                        <label for="name">username:</label>
-                        <input type="text" class="form-control" placeholder="Enter a username (~16 characters)" id="s_name" autocomplete="off">
-                    </div>
-                    <div class="form-group">
                         <label for="email">email:</label>
                         <input type="text" class="form-control" placeholder="Enter a valid email address. (user@organization.com)" id="s_email" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label for="pwd">password:</label>
+                        <label for="pwd">Password:</label>
                         <input type="password" class="form-control" placeholder="Enter a valid password. (A-z, 0-9, NO special characters)" id="s_pwd" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label for="pwd-cfmn">password confirmation:</label>
+                        <label for="pwd-cfmn">Password Confirmation:</label>
                         <input type="password" class="form-control" placeholder="Re-enter your password." id="s_pwdcfmn" autocomplete="off">
                     </div>
                     <!--
@@ -141,8 +141,8 @@
     <div>
         <div class="text-center">
             <video id="typex-legends" preload="auto" autoplay="true" loop="loop" muted="muted">
-						<source src="img/TypexLegends.mp4" type="video/mp4">
-				</video>
+                <source src="img/TypexLegends.mp4" type="video/mp4">
+            </video>
         </div>
     </div>
 </body>

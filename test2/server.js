@@ -41,7 +41,7 @@ http.listen(port, function() {
 });
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/login.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 app.use(express.static(__dirname + '/'));
