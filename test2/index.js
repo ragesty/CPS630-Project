@@ -56,19 +56,33 @@ function signingIn() {
     var usr_email = document.getElementById("l_email").value;
     var usr_pwd = document.getElementById("l_pwd").value;
     firebase.auth().signInWithEmailAndPassword(usr_email, usr_pwd).then(function(usr) {
-        localStorage.setItem("userName", usr.username);
-        localStorage.setItem("userID", usr.uid);
         window.location = "loggedIn.html";
     }, function(error) {
         alert(error.code + "\n" + error.message);
     });
+
+    var myUsername = "Visitor";
+
+    firebase.auth().onAuthStateChanged(function(usr) {
+        if (usr) {
+
+            firebase.database().ref('users/' + usr.uid).once('value').then(function(snapshot) {
+                myUsername = snapshot.val().username;
+            });
+            localStorage.setItem("username", myUsername);
+
+        } else
+            alert("NO USER");
+    });
+
+
+
 }
 
 function signOut() {
     firebase.auth().signOut().then(function() {
         alert("You have successfully signed out!");
         localStorage.removeItem("userID");
-        localStorage.removeItem("userName");
         window.location = "index.html";
     }).catch(function(error) {
         alert('you really fucked up here');

@@ -28,7 +28,9 @@ var wordArray = [];
 
 // Get username value from url
 const urlParams = new URLSearchParams(window.location.search);
-var myUserName = localStorage.getItem("userName");
+var myUsername = localStorage.getItem("username");
+
+console.log(myUsername);
 
 /* Function that end the game*/
 function endGame(teamPoints, playerPoints, teamPoints2) {
@@ -159,7 +161,7 @@ app.controller("cont", function($scope) {
             $('#numOfPlayers').html("");
             $('#test').html('PASS');
             $('#room').html(msg);
-            // socket.emit('setUsername', myUsername);
+            socket.emit('setUsername', myUsername);
             var timeInterval = setInterval(() => {
                 counter++;
                 $('#timer').html("GAME STARTING IN: " + (timer1 - counter));
