@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TypeX Legends</title>
+    <link href="https://fonts.googleapis.com/css?family=Armata" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-firestore.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js"></script>
+
+</head>
+
+<body class="dark-grey">
+    <header class="page-header">
+        <div class="container">
+            <img src="./img/typex_legends_logo_white.png" alt="Logo" id="logo">
+            <!--Dropdown Menu-->
+        </div>
+    </header>
+
+    <!--Main Body-->
+    <div class="row">
+
+        <!--Left side ads-->
+        <div class="col-sm-2">
+
+        </div>
+        <!--Leaderboard-->
+        <div class="col-sm-8">
+
+            <h1 class="text-center text-light pb-5">LEADERBOARDS</h1>
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <h3>#</h3>
+                        </th>
+                        <th scope="col">
+                            <h3>Username</h3>
+                        </th>
+                        <th scope="col">
+                            <h3>Points</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <!--Right side ads-->
+        <div class="col-sm-2">
+
+        </div>
+
+    </div>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBV_3f1CSrUJcQ_0eNtMT3yVFkeIIHtplw",
+            authDomain: "cps630-1a48f.firebaseapp.com",
+            databaseURL: "https://cps630-1a48f.firebaseio.com",
+            projectId: "cps630-1a48f",
+            storageBucket: "cps630-1a48f.appspot.com",
+            messagingSenderId: "645223268457"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="leaderboards.js"></script>
+</body>
+
+</html>
