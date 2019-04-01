@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 				<link rel="stylesheet" type="text/css" href="index_style.css">
+				<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
 				<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
 				<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
 				<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
@@ -30,33 +31,23 @@
     		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 				<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 				<script src="index.js"></script>
-				<!--
-				<script>
 
-						var socket = io();
-						function setUsername() {
-								var myUsername = document.getElementById("username").value;
-								socket.emit('joinGame');
-								window.location.href = "./index.html?myVar1=" + myUsername;
-						}
-				</script> 
-				-->
     </head>
     <body>
 				<!--Not logged in navbar-->
         <nav class="navbar navbar-inverse" id="logged_out_nav">
             <div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="#">TypeX Legends</a>
+					<a class="navbar-brand">TypeX Legends</a>
 				</div>
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#">Shop</a></li>
-					<li><a href="#">Leaderboards</a></li>
+					<li class="active"><a>Home</a></li>
+					<li><a>Shop</a></li>
+					<li><a>Leaderboards</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li id="signIn-btn"><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-					<li id="logIn-btn"><a href="#" data-toggle="modal" data-target="#myModal2"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li id="signIn-btn"><a data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+					<li id="logIn-btn"><a data-toggle="modal" data-target="#myModal2"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 				</ul>
             </div>
 				</nav>
@@ -72,7 +63,7 @@
 					<li><a href="#">Leaderboards</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li id="welcome-bar"><a class="navbar-brand" name="logged_in">Welcome to Typex Legends, <script>getNickName()</script></a></li>
+					<li id="welcome-bar"><a class="navbar-brand" name="logged_in">Welcome to Typex Legends</a></li>
 					<li id="logIn-btn" onclick="signOut()"><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log Out</a></li>
 				</ul>
             </div>
@@ -155,10 +146,10 @@
 					</div>
 					<div class="jumbotron" id="li-home">
 							<h1>TypeX Legends</h1> 
-							<p>Greetings <script>getNickname();</script>,</p>
+							<p>Greetings <script></script>,</p>
 							<p>We hope you have a great and speedy day!</p>
 							<p>Ready to start?</p>
-							<button type="button" class="btn btn-info">Join a game now!</button>
+							<button type="button" class="btn btn-info" onclick="writeNickName()">Join a game now!</button>
 						</div>
 				</div>
     </body>

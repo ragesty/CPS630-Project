@@ -18,20 +18,18 @@ function createUserAcc(usr_email,usr_pass){
         alert(error.code + ": " + error.message);
         // ...
     });
+    alert("sign up successful");
     
     firebase.auth().onAuthStateChanged(function(usr){
         if(usr){
-            firebase.database().ref('users/' + usr.uid).set({
-                username: usr_email,
-                pass : usr_pass
-            });
-            firebase.auth().signOut().catch(function(error){
-                alert(error.code + ": " + error.message);
-            })
+            alert("log in successful, uid:" + usr.uid);
         }
     })
-    
-
+    var id= Math.floor(Math.random() * 100);
+    firebase.database().ref('users/' + id).set({
+        username: usr_email,
+        pass : usr_pass
+    });
     
 }
 
