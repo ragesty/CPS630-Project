@@ -80,6 +80,10 @@ hr.new {
     background-size: cover;
 }
 
+.height-400 {
+    height: 400px;
+}
+
 .columns2 {
     list-style-type: disc;
     columns: 2;
