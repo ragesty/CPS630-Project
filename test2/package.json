@@ -1,14 +1,18 @@
 {
-    "name": "socket-chat-example",
+    "name": "type-x-legends",
     "version": "0.0.1",
-    "description": "my first socket.io app",
+    "description": "typing game",
     "dependencies": {
         "express": "*",
         "express-session": "^1.15.6",
         "express-socket.io-session": "^1.3.5",
         "socket.io": "*"
     },
+    "main": "server.js",
     "scripts": {
-        "start": "node index.js"
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "engines": {
+        "node": "*"
     }
 }
